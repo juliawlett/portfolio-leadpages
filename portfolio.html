@@ -1038,6 +1038,44 @@
       z-index: 1
     }
 
+    .preview-link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      color: #fff;
+      background: rgba(5, 12, 18, .5);
+      font: 600 11px DM Mono;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity .25s ease, background .25s ease;
+    }
+
+    .preview-link span {
+      transform: translateY(7px);
+      transition: transform .25s ease;
+    }
+
+    .preview-link:hover,
+    .preview-link:focus-visible {
+      background: rgba(5, 12, 18, .68);
+      opacity: 1;
+    }
+
+    .preview-link:hover span,
+    .preview-link:focus-visible span {
+      transform: translateY(0);
+    }
+
+    .preview-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -3px;
+    }
+
     .new-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
