@@ -8,6 +8,27 @@ function parseOriginalPage() {
   return new DOMParser().parseFromString(originalHtml, 'text/html');
 }
 
+function addPreviewLinks() {
+  const previewLinks = [];
+
+  document.querySelectorAll('.project-preview .browser-view iframe').forEach((iframe) => {
+    if (!iframe.src || iframe.parentElement.querySelector('.preview-link')) return;
+
+    const link = document.createElement('a');
+    link.className = 'preview-link';
+    link.href = iframe.src;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.setAttribute('aria-label', `Abrir ${iframe.title || 'projeto'} em nova aba`);
+    link.innerHTML = '<span>Abrir projeto</span><span aria-hidden="true">↗</span>';
+
+    iframe.parentElement.appendChild(link);
+    previewLinks.push(link);
+  });
+
+  return previewLinks;
+}
+
 function App() {
   const pageHtml = useMemo(() => {
     const documentHtml = parseOriginalPage();
@@ -42,7 +63,10 @@ function App() {
       injectedScripts.push(clonedScript);
     });
 
+    const previewLinks = addPreviewLinks();
+
     return () => {
+      previewLinks.forEach((link) => link.remove());
       injectedHeadNodes.forEach((node) => node.remove());
       injectedScripts.forEach((script) => script.remove());
       document.body.style.overflow = '';
